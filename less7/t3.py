@@ -8,7 +8,7 @@ def m(lst1, lst2):
     if len(lst2) == 0:
         return lst1
     result = []
-    while len(result) < len(lst1) + len(lst2):
+    while True:
         if lst1[0] > lst2[0]:
             result.append(lst2.pop(0))
         else:
