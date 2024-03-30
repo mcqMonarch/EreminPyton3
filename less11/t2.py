@@ -23,6 +23,6 @@ def element(s):
 
 t.speed(200)
 for _ in range(3):
-    t.rt(120)
+    t.lt(120)
     element(100)
 t.mainloop()
