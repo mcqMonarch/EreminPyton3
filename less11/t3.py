@@ -19,19 +19,21 @@ class System:
         self.rules = {}
 
     def draw(self):
-        tracer(1, 0)
+        # tracer(1, 0)
 
         for i in self.axiom2:
             if 'F' == i:
                 self.t.forward(self.len)
             elif '+' == i:
-                self.t.left(self.angle)
+                self.t.left(self.angle + random.randint(-15, 15))
             elif i == '-':
-                self.t.right(self.angle)
+                self.t.right(self.angle + random.randint(-15, 15))
             elif i == '[':
                 self.k.append((self.t.xcor(), self.t.ycor()))
             elif i == ']':
+                self.t.up()
                 self.t.setpos(self.k.pop(-1))
+                self.t.down()
             elif i == 'B':
                 if random.randint(0, 10) > 4:
                     self.t.forward(self.len)
@@ -68,7 +70,7 @@ class System:
 # snow.draw()
 rules = (('F', 'BF'), ('C', 'F[+BC][--BC]'))
 tortila = Turtle
-tree = System(tortila(), (0, -100), 10, 'F-F-BBCC', 5, 70)
+tree = System(tortila(), (0, -100), 10, 'FFBBCC', 5, 20)
 tree.add_rules(rules)
 tree.repeat(12)
 tree.draw()
