@@ -1,3 +1,6 @@
+import fnmatch
+import hashlib
+
 import pymysql
 
 
@@ -16,17 +19,25 @@ class MySQL:
                                        password=password,
                                        database=db_name)
 
-    def add_user(self, login, password, email):
-        if email not in self.select_all_email():
-            request = (f"INSERT INTO users (login, password, email) "
-                       f"VALUES ('{login}', '{password}', '{email}')")
-            # ПРОВЕРКА ПОЧТЫ
-            # request = "INSERT INTO users (login, password, email) VALUES ?,?,?"
-            with self.connect.cursor() as c:
-                c.execute(request,(login, password, email))
-                self.connect.commit()
+    def add_user(self, login, password, rt_password ,email):
+        if fnmatch.fnmatch(email, '*?@*?.*?'):
+            if email not in self.select_all_email():
+                def check_correct_password():
+                    return all([password == rt_password, len(password) >= 8])
+
+                if check_correct_password():
+                    request = (f"INSERT INTO users (login, password, email) "
+                               f"VALUES ('{login}', '{hashlib.sha3_256(password.encode("utf8")).hexdigest()}', '{email}')")
+                    with self.connect.cursor() as c:
+                        c.execute(request)
+                        self.connect.commit()
+                        return True
+                else:
+                    print('Проверьте пароль')
+            else:
+                print('Email уже используется')
         else:
-            print('Email уже используется')
+            print('Проверьте написание email')
 
     def select_all(self):
         request = 'SELECT * FROM users'
@@ -45,4 +56,4 @@ class MySQL:
 
 if __name__ == '__main__':
     bd = MySQL()
-    bd.add_user('detyainterneta', '000000', 'Detyainterneta@gmail.com')
+    bd.add_user('Detyainterneta', '00000000', '00000000',  'Detinterneta@gmail.com')
