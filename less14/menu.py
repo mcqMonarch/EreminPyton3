@@ -36,6 +36,7 @@ class Menu:
         print('Регистрация...')
         print('Регистрация..')
         print('Регистрация.')
+        print('Успешно')
         bd = db.MySQL()
         if bd.add_user(self.login, self.password, self.rt_password, self.email):
             raise SystemExit(123)
